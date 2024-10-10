@@ -1,0 +1,40 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Male and Female Dropout Rates",
+    "data": {
+      "url": "path_to_your_combined_data.csv", 
+      "format": {"type": "csv"}
+    },
+    "transform": [
+      {
+        "fold": ["Male Dropouts", "Female Dropouts"],
+        "as": ["Gender", "Dropout Rate"]
+      }
+    ],
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "Year",
+        "type": "ordinal",
+        "title": "Year"
+      },
+      "y": {
+        "aggregate": "sum",
+        "field": "Dropout Rate",
+        "type": "quantitative",
+        "title": "Dropout Rate"
+      },
+      "color": {
+        "field": "Gender",
+        "type": "nominal",
+        "title": "Gender"
+      },
+      "tooltip": [
+        {"field": "Country Name", "type": "nominal", "title": "Country"},
+        {"field": "Year", "type": "ordinal", "title": "Year"},
+        {"field": "Dropout Rate", "type": "quantitative", "title": "Dropout Rate"},
+        {"field": "Gender", "type": "nominal", "title": "Gender"}
+      ]
+    }
+  }
+  
