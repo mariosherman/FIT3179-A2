@@ -73,6 +73,19 @@ body, h1, p {
 	width: 100%;
 	height: 600px;
   }
+
+  
+	.literacy-text {
+		text-align:center;
+	}
+
+	#symbol_map, #dropout_chart {
+		width: 100%;
+		max-width: 1000px; 
+		height: auto;
+		margin: 20px auto;
+	  }
+	  
   
   /* Responsive design */
   @media (max-width: 768px) {

@@ -1,40 +1,38 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Male and Female Dropout Rates",
-    "data": {
-      "url": "path_to_your_combined_data.csv", 
-      "format": {"type": "csv"}
-    },
-    "transform": [
-      {
-        "fold": ["Male Dropouts", "Female Dropouts"],
-        "as": ["Gender", "Dropout Rate"]
-      }
-    ],
-    "mark": "bar",
-    "encoding": {
-      "x": {
-        "field": "Year",
-        "type": "ordinal",
-        "title": "Year"
-      },
-      "y": {
-        "aggregate": "sum",
-        "field": "Dropout Rate",
-        "type": "quantitative",
-        "title": "Dropout Rate"
-      },
-      "color": {
-        "field": "Gender",
-        "type": "nominal",
-        "title": "Gender"
-      },
-      "tooltip": [
-        {"field": "Country Name", "type": "nominal", "title": "Country"},
-        {"field": "Year", "type": "ordinal", "title": "Year"},
-        {"field": "Dropout Rate", "type": "quantitative", "title": "Dropout Rate"},
-        {"field": "Gender", "type": "nominal", "title": "Gender"}
-      ]
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Youth Literacy Rate Comparison (Male vs Female)",
+  "data": {
+    "url": "path_to_your_data.csv",  
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "fold": [
+        "Youth literacy rate, population 15-24 years, male (%), LR.AG15T24.M",
+        "Youth literacy rate, population 15-24 years, female (%), LR.AG15T24.F"
+      ],
+      "as": ["Gender", "Literacy Rate"]
     }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "Year", "type": "ordinal", "title": "Year"},
+    "y": {
+      "aggregate": "sum",
+      "field": "Literacy Rate",
+      "type": "quantitative",
+      "title": "Literacy Rate (%)"
+    },
+    "color": {
+      "field": "Gender",
+      "type": "nominal",
+      "scale": {"range": ["#1f77b4", "#ff7f0e"]}, 
+      "title": "Gender"
+    },
+    "tooltip": [
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {"field": "Gender", "type": "nominal", "title": "Gender"},
+      {"field": "Literacy Rate", "type": "quantitative", "title": "Literacy Rate (%)"}
+    ]
   }
-  
+}
