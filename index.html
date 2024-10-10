@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Education Worldwide</title>
 
-  <!-- Import Vega & Vega-Lite -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
   
-  <!-- Link to the external CSS file -->
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   
 </head>
@@ -22,34 +20,44 @@
     <p>Explore global education trends through this interactive map and data visualizations</p>
   </header>
 
-  <!-- Main Dashboard Section -->
-  <div class="dashboard-container">
+  <!-- Main Dashboard Section (Map and Literacy Rates) -->
+  <div class="dashboard-container" style="display: flex;">
 
-    <div class="literacy-text">
+    <!-- Section for Literacy Text (on the left) -->
+    <div class="literacy-text" style="flex: 1; padding-right: 20px;">
       <h2>Global Literacy Rates</h2>
       <p>
         Literacy is a cornerstone of education, enabling individuals to read, write, and communicate effectively, which is vital for learning, personal growth, and participation in society. It serves as a key indicator for educational quality and development, often used by governments and organizations to measure the success of education systems and policies. High literacy rates are linked to stronger economies and better job opportunities, while low rates highlight areas needing improved access to education. Literacy is also a core indicator for global initiatives like the UN’s Sustainable Development Goals, which aim to ensure equitable education for all.
       </p>
-
-      <br><br>
     </div>
 
-    <!-- Section for Map -->
-    <div class="literacy-map" id="symbol_map" class="map-container"></div>
+    <!-- Section for Map (on the right) -->
+    <div style="flex: 2;">
+      <div id="symbol_map" class="map-container"></div>
+    </div>
+  </div>
 
-    <!-- Section for Bar Chart -->
-    <div id="literacy-gender-chart" class="chart-container"></div>
+  <div class="expenditure-section" style="display: flex; margin-top: 40px;">
+
+    <div class="expenditure-text" style="flex: 1; padding-right: 20px;">
+      <h2>Government Expenditure on Education</h2>
+      <p>
+        Government expenditure on education is a critical indicator of a nation's commitment to fostering a well-educated and skilled population. Education spending influences the quality of schools, availability of resources, and access to education, especially in underserved regions. By analyzing the mean government expenditure across countries over time, we can observe global trends and shifts in priorities, especially in the years following significant global events or policy changes. This visualization highlights the average investment in education since 2000, offering insights into how different countries prioritize education as a tool for economic and social growth.
+      </p>
+    </div>
+
+    <!-- Line Chart (on the right of the text) -->
+    <div id="expenditure_line_chart" class="chart-container" style="flex: 2;"></div>
 
   </div>
 
   <script type="text/javascript">
+    // Map visualization
     vegaEmbed('#symbol_map', "js/cloroplethMap.json").then(function(result) {
-      // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
     }).catch(console.error);
 
-    // Embed the stacked bar chart (male and female dropouts)
-    vegaEmbed('#literacy-gender-chart', "js/expenditureLineChart.json").then(function(result) {
-      // Access the Vega view instance as result.view
+    // Line chart for mean government expenditures
+    vegaEmbed('#expenditure_line_chart', "js/expenditureLineChart.json").then(function(result) {
     }).catch(console.error);
   </script>
 

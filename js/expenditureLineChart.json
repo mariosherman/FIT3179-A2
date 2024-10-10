@@ -1,7 +1,7 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": "Mean Government Expenditure on Education Over Time",
-    "width": 800,  
+    "width": 900,  
     "height": 300,  
     "data": {
       "url": "data/expenditure-on-education.csv", 
