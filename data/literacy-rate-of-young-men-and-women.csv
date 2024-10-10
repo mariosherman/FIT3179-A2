@@ -1,4 +1,4 @@
-Entity,Code,Year,"Youth literacy rate, population 15-24 years, male (%), LR.AG15T24.M","Youth literacy rate, population 15-24 years, female (%), LR.AG15T24.F",Population (historical),Continent
+Entity,Code,Year,Youth Male Literacy Rate (%),Youth Female Literacy Rate(%), Population (historical),Continent
 Abkhazia,OWID_ABK,2015,,,,Asia
 Afghanistan,AFG,-10000,,,14737,
 Afghanistan,AFG,-9000,,,20405,

@@ -1,22 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Youth Literacy Rate Comparison (Male vs Female)",
   "data": {
-    "url": "path_to_your_data.csv",  
+    "url": "https://raw.githubusercontent.com/mariosherman/FIT3179-A2/main/data/literacy-rate-of-young-men-and-women.csv",
     "format": {"type": "csv"}
   },
-  "transform": [
-    {
-      "fold": [
-        "Youth literacy rate, population 15-24 years, male (%), LR.AG15T24.M",
-        "Youth literacy rate, population 15-24 years, female (%), LR.AG15T24.F"
-      ],
-      "as": ["Gender", "Literacy Rate"]
-    }
-  ],
   "mark": "bar",
   "encoding": {
-    "x": {"field": "Year", "type": "ordinal", "title": "Year"},
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "title": "Year"
+    },
     "y": {
       "aggregate": "sum",
       "field": "Literacy Rate",
@@ -26,13 +20,20 @@
     "color": {
       "field": "Gender",
       "type": "nominal",
-      "scale": {"range": ["#1f77b4", "#ff7f0e"]}, 
+      "scale": {
+        "domain": ["Youth Male Literacy Rate (%)", "Youth Female Literacy Rate(%)"],
+        "range": ["#1f77b4", "#ff7f0e"]
+      },
       "title": "Gender"
+    }
+  },
+  "transform": [
+    {
+      "fold": ["Youth Male Literacy Rate (%)", "Youth Female Literacy Rate(%)"],
+      "as": ["Gender", "Literacy Rate"]
     },
-    "tooltip": [
-      {"field": "Year", "type": "ordinal", "title": "Year"},
-      {"field": "Gender", "type": "nominal", "title": "Gender"},
-      {"field": "Literacy Rate", "type": "quantitative", "title": "Literacy Rate (%)"}
-    ]
-  }
+    {
+      "filter": "datum.Year >= 2000"
+    }
+  ]
 }

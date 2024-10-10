@@ -38,7 +38,7 @@
     <div class="literacy-map" id="symbol_map" class="map-container"></div>
 
     <!-- Section for Bar Chart -->
-    <div id="dropout_chart" class="chart-container"></div>
+    <div id="literacy-gender-chart" class="chart-container"></div>
 
   </div>
 
@@ -48,7 +48,7 @@
     }).catch(console.error);
 
     // Embed the stacked bar chart (male and female dropouts)
-    vegaEmbed('#dropout_chart', "js/stackedBarChart.json").then(function(result) {
+    vegaEmbed('#literacy-gender-chart', "js/stackedBarChart.json").then(function(result) {
       // Access the Vega view instance as result.view
     }).catch(console.error);
   </script>
