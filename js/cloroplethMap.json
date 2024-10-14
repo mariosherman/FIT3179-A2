@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Global Literacy Rates",
-  "width": 800,
-  "height": 600,
+  "width": 900,
+  "height": 500,
   "data": {
     "url": "data/ne_110m.json",
     "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
@@ -26,7 +26,7 @@
           "lookup": "properties.NAME",
           "from": {
             "data": {
-              "url": "https://raw.githubusercontent.com/mariosherman/FIT3179-A2/refs/heads/main/data/cross-country-literacy-rates.csv?token=GHSAT0AAAAAACYQ2BCGR4QSGC7CVJ6YOMISZYH3QBQ",
+              "url": "data/cross-country-literacy-rates.csv",
               "format": {"type": "csv"}
             },
             "key": "Entity",

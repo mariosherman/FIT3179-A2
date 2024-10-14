@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Education Worldwide</title>
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
-  
+
   <link rel="stylesheet" type="text/css" href="css/styles.css">
-  
 </head>
 <body>
 
@@ -20,42 +24,61 @@
     <p>Explore Global Education Trends</p>
   </header>
 
-  <!-- Main Dashboard Section (Map and Literacy Rates) -->
-  <div class="dashboard-container" style="display: flex;">
+  <!-- Dashboard Div -->
+  <div id="dashboard" class="dashboard-container">
 
-    <!-- Section for Literacy Text (on the left) -->
-    <div class="literacy-text" style="flex: 1; padding-right: 20px;">
+    <!-- Section for Literacy Text -->
+    <div class="literacy-text" style="padding-right: 20px;">
       <h2>Global Literacy Rates</h2>
       <p>
-        Literacy is a cornerstone of education, enabling individuals to read, write, and communicate effectively, which is vital for learning, personal growth, and participation in society. It serves as a key indicator for educational quality and development, often used by governments and organizations to measure the success of education systems and policies. High literacy rates are linked to stronger economies and better job opportunities, while low rates highlight areas needing improved access to education. Literacy is also a core indicator for global initiatives like the UN’s Sustainable Development Goals, which aim to ensure equitable education for all.
+        Literacy is a cornerstone of education, enabling individuals to read, write, and communicate effectively, which is vital for learning, personal growth, and participation in society. It serves as a key indicator for educational quality and development, often used by governments and organizations to measure the success of education systems and policies. High literacy rates are linked to stronger economies and better job opportunities, while low rates highlight areas needing improved access to education.
       </p>
     </div>
 
-    <!-- Section for Map (on the right) -->
-    <div style="flex: 2;">
-      <div id="symbol_map" class="map-container"></div>
-    </div>
-  </div>
+    <!-- Section for Map -->
+    <div id="symbol_map" class="chart-container"></div>
 
-  <div class="expenditure-section" style="display: flex; margin-top: 40px;">
-
-    <div class="expenditure-text" style="flex: 1; padding-right: 20px;">
+    <!-- Section for Government Expenditure Text -->
+    <div class="expenditure-text" style="padding-right: 20px; margin-top: 40px;">
       <h2>Government Expenditure on Education</h2>
       <p>
         Government expenditure on education is a critical indicator of a nation's commitment to fostering a well-educated and skilled population. Education spending influences the quality of schools, availability of resources, and access to education, especially in underserved regions. By analyzing the mean government expenditure across countries over time, we can observe global trends and shifts in priorities, especially in the years following significant global events or policy changes. This visualization highlights the average investment in education since 2000, offering insights into how different countries prioritize education as a tool for economic and social growth.
       </p>
     </div>
 
-    <div id="expenditure_line_chart" class="chart-container" style="flex: 2;"></div>
+    <!-- Section for Charts -->
+    <div class="expenditure-charts" id="expenditure-charts">
+      <!-- Line chart for mean government expenditure -->
+      <div id="expenditure_line_chart" class="chart-container"></div>
 
+      <!-- Top and Bottom 5 Countries Charts -->
+      <div id="top_5_countries" class="chart-container"></div>
+      <div id="bottom_5_countries" class="chart-container"></div>
+
+      <!-- New Chart (#chart2) -->
+      <div id="chart2" class="chart-container"></div>
+    </div>
   </div>
 
   <script type="text/javascript">
     // Map visualization
     vegaEmbed('#symbol_map', "js/cloroplethMap.json").then(function(result) {
     }).catch(console.error);
-    
+
+    // Line chart for mean government expenditure
     vegaEmbed('#expenditure_line_chart', "js/expenditureLineChart.json").then(function(result) {
+    }).catch(console.error);
+
+    // Bar chart for top 5 countries by mean expenditure
+    vegaEmbed('#top_5_countries', "js/top5ExpenditureBarChart.json").then(function(result) {
+    }).catch(console.error);
+
+    // Bar chart for bottom 5 countries by mean expenditure
+    vegaEmbed('#bottom_5_countries', "js/bottom5ExpenditureBarChart.json").then(function(result) {
+    }).catch(console.error);
+
+    // Embed the new chart (#chart2)
+    vegaEmbed('#chart2', "js/chart2.json").then(function(result) {
     }).catch(console.error);
   </script>
 
