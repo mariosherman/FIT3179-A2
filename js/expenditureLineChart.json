@@ -1,52 +1,200 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Mean Government Expenditure on Education Over Time",
-    "width": 750,  
-    "height": 300,  
-    "data": {
-      "url": "data/expenditure-on-education.csv", 
-      "format": {"type": "csv"}
-    },
-    "transform": [
-      {
-        "fold": [
-          "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", 
-          "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", 
-          "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", 
-          "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", 
-          "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", 
-          "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", 
-          "2020", "2021", "2022", "2023"
-        ],
-        "as": ["Year", "Expenditure"]
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "vconcat": [
+    {
+      "title": "Mean Government Expenditure on Education Over Time",
+      "width": 750,
+      "height": 300,
+      "data": {
+        "url": "data/expenditure-on-education.csv",
+        "format": {"type": "csv"}
       },
-      {
-        "filter": "datum.Expenditure != ''" 
+      "transform": [
+        {
+          "fold": [
+            "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969",
+            "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979",
+            "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989",
+            "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999",
+            "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009",
+            "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019",
+            "2020", "2021", "2022", "2023"
+          ],
+          "as": ["Year", "Expenditure"]
+        },
+        {
+          "filter": "datum.Expenditure != ''"
+        },
+        {
+          "calculate": "toNumber(datum.Expenditure)",
+          "as": "Expenditure"
+        }
+      ],
+      "mark": {
+        "type": "line"
       },
-      {
-        "calculate": "toNumber(datum.Expenditure)", 
-        "as": "Expenditure"
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": "Year",
+          "axis": {
+            "format": "d"
+          }
+        },
+        "y": {
+          "aggregate": "mean",
+          "field": "Expenditure",
+          "type": "quantitative",
+          "title": "Mean Expenditure (%)"
+        },
+        "tooltip": [
+          {"field": "Year", "type": "ordinal", "title": "Year"},
+          {"aggregate": "mean", "field": "Expenditure", "type": "quantitative", "title": "Mean Expenditure (%)"}
+        ]
       }
-    ],
-    "mark": {
-      "type": "line"
     },
-    "encoding": {
-      "x": {
-        "field": "Year",
-        "type": "ordinal",
-        "title": "Year"
-      },
-      "y": {
-        "aggregate": "mean", 
-        "field": "Expenditure",
-        "type": "quantitative",
-        "title": "Mean Expenditure (%)"
-      },
-      "tooltip": [
-        {"field": "Year", "type": "ordinal", "title": "Year"},
-        {"aggregate": "mean", "field": "Expenditure", "type": "quantitative", "title": "Mean Expenditure (%)"}
+    {
+      "hconcat": [
+        {
+          "title": "Top 5 Countries by Mean Expenditure",
+          "data": {
+            "url": "data/expenditure-on-education.csv",
+            "format": {"type": "csv"}
+          },
+          "transform": [
+            {
+              "fold": [
+                "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969",
+                "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979",
+                "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989",
+                "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999",
+                "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009",
+                "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019",
+                "2020", "2021", "2022", "2023"
+              ],
+              "as": ["Year", "Expenditure"]
+            },
+            {
+              "filter": "datum.Expenditure != ''"
+            },
+            {
+              "calculate": "toNumber(datum.Expenditure)",
+              "as": "Expenditure"
+            },
+            {
+              "aggregate": [
+                {
+                  "op": "mean",
+                  "field": "Expenditure",
+                  "as": "Mean Expenditure"
+                }
+              ],
+              "groupby": ["Country Name"]
+            },
+            {
+              "window": [
+                {
+                  "op": "rank",
+                  "as": "rank"
+                }
+              ],
+              "sort": [{"field": "Mean Expenditure", "order": "descending"}]
+            },
+            {
+              "filter": "datum.rank <= 5"  
+            }
+          ],
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "Mean Expenditure",
+              "type": "quantitative",
+              "title": "Mean Expenditure (%)"
+            },
+            "y": {
+              "field": "Country Name",
+              "type": "nominal",
+              "sort": "-x",
+              "title": "Country"
+            },
+            "color": {"field": "Country Name", "type": "nominal"},
+            "tooltip": [
+              {"field": "Country Name", "type": "nominal", "title": "Country"},
+              {"field": "Mean Expenditure", "type": "quantitative", "title": "Mean Expenditure (%)"}
+            ]
+          }
+        },
+        {
+          "title": "Bottom 5 Countries by Mean Expenditure",
+          "data": {
+            "url": "data/expenditure-on-education.csv",
+            "format": {"type": "csv"}
+          },
+          "transform": [
+            {
+              "fold": [
+                "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969",
+                "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979",
+                "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989",
+                "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999",
+                "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009",
+                "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019",
+                "2020", "2021", "2022", "2023"
+              ],
+              "as": ["Year", "Expenditure"]
+            },
+            {
+              "filter": "datum.Expenditure != ''"
+            },
+            {
+              "calculate": "toNumber(datum.Expenditure)",
+              "as": "Expenditure"
+            },
+            {
+              "aggregate": [
+                {
+                  "op": "mean",
+                  "field": "Expenditure",
+                  "as": "Mean Expenditure"
+                }
+              ],
+              "groupby": ["Country Name"]
+            },
+            {
+              "window": [
+                {
+                  "op": "rank",
+                  "as": "rank"
+                }
+              ],
+              "sort": [{"field": "Mean Expenditure", "order": "ascending"}]  
+            },
+            {
+              "filter": "datum.rank <= 5"  
+            }
+          ],
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "Mean Expenditure",
+              "type": "quantitative",
+              "title": "Mean Expenditure (%)"
+            },
+            "y": {
+              "field": "Country Name",
+              "type": "nominal",
+              "sort": "-x",
+              "title": "Country"
+            },
+            "color": {"field": "Country Name", "type": "nominal"},
+            "tooltip": [
+              {"field": "Country Name", "type": "nominal", "title": "Country"},
+              {"field": "Mean Expenditure", "type": "quantitative", "title": "Mean Expenditure (%)"}
+            ]
+          }
+        }
       ]
     }
-  }
-  
+  ]
+}

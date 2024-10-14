@@ -46,7 +46,6 @@
       </p>
     </div>
 
-    <!-- Line Chart (on the right of the text) -->
     <div id="expenditure_line_chart" class="chart-container" style="flex: 2;"></div>
 
   </div>
@@ -55,8 +54,7 @@
     // Map visualization
     vegaEmbed('#symbol_map', "js/cloroplethMap.json").then(function(result) {
     }).catch(console.error);
-
-    // Line chart for mean government expenditures
+    
     vegaEmbed('#expenditure_line_chart', "js/expenditureLineChart.json").then(function(result) {
     }).catch(console.error);
   </script>
