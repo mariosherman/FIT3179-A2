@@ -7,37 +7,32 @@
   },
   "width": 800,
   "height": 600,
-  "transform": [
-    {"filter": "datum.Year == 2023"}  
-  ],
   "mark": "point",
+  "transform": [
+    {
+      "filter": "datum.Year == 2023"
+    }
+  ],
   "encoding": {
     "x": {
-      "field": "Youth Female Literacy Rate",
+      "field": "Youth Female Literacy Rate (%)",
       "type": "quantitative",
       "axis": {"title": "Female Youth Literacy Rate (%)"}
     },
     "y": {
-      "field": "Youth Male Literacy Rate",
+      "field": "Youth Male Literacy Rate (%)",
       "type": "quantitative",
       "axis": {"title": "Male Youth Literacy Rate (%)"}
     },
     "color": {
       "field": "Continent",
       "type": "nominal",
-      "legend": {"title": "Continent"},
-      "scale": {"scheme": "tableau10"}
-    },
-    "size": {
-      "field": "Population (historical)",
-      "type": "quantitative",
-      "legend": {"title": "Population (Historical)"}
+      "legend": {"title": "Continent"}
     },
     "tooltip": [
       {"field": "Entity", "type": "nominal", "title": "Country"},
-      {"field": "Year", "type": "quantitative", "title": "Year"},
-      {"field": "Youth Male Literacy Rate", "type": "quantitative", "title": "Male Youth Literacy Rate (%)"},
-      {"field": "Youth Female Literacy Rate", "type": "quantitative", "title": "Female Youth Literacy Rate (%)"},
+      {"field": "Youth Male Literacy Rate (%)", "type": "quantitative", "title": "Male Youth Literacy Rate (%)"},
+      {"field": "Youth Female Literacy Rate (%)", "type": "quantitative", "title": "Female Youth Literacy Rate (%)"},
       {"field": "Population (historical)", "type": "quantitative", "title": "Population"}
     ]
   }
