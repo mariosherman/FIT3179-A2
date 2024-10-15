@@ -44,7 +44,7 @@
       "filter": "Continent_selection == 'All' || datum.Continent == Continent_selection"
     }
   ],
-  "width": 550,
+  "width": 700,
   "height": 350,
   "mark": "point",
   "encoding": {
