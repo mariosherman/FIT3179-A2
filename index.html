@@ -10,10 +10,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
+  <!-- Vega and Vega-Lite -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
 
+  <!-- CSS Styles -->
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   <style>
     .scatter-plot-section {
@@ -36,6 +38,14 @@
 
     .radar-chart-section {
       margin-top: 40px;
+    }
+
+    .stacked-bar-section {
+      margin-top: 40px;
+    }
+
+    .chart-container {
+      margin-bottom: 40px;
     }
   </style>
 </head>
@@ -65,7 +75,7 @@
     <div class="expenditure-text" style="padding-right: 20px; margin-top: 40px;">
       <h2>Government Expenditure on Education</h2>
       <p>
-        Government expenditure on education is a critical indicator of a nation's commitment to fostering a well-educated and skilled population. Education spending influences the quality of schools, availability of resources, and access to education, especially in underserved regions. By analyzing the <strong>mean government expenditure</strong> across countries over time, we can observe global trends and shifts in priorities, especially in the years following significant global events or policy changes. This visualization highlights the average investment in education since 2000, offering insights into how different countries prioritize education as a tool for economic and social growth.
+        Government expenditure on education is a critical indicator of a nation's commitment to fostering a well-educated and skilled population. Education spending influences the quality of schools, availability of resources, and access to education, especially in underserved regions. By analyzing the <strong>mean government expenditure</strong> across countries over time, we can observe global trends and shifts in priorities, especially in the years following significant global events or policy changes.
       </p>
     </div>
 
@@ -85,9 +95,9 @@
       <div class="scatter-plot-text">
         <h2>Does Gender Matter?</h2>
         <p>
-          Youth literacy rates vary significantly across different <strong>regions</strong> of the world. Some areas, particularly in <strong>Europe</strong> and <strong>East Asia</strong>, demonstrate near equality between young male and female literacy rates. On the other hand, regions like <strong>Africa</strong> and parts of <strong>South Asia</strong> continue to face challenges in balancing literacy rates between genders. 
+          Youth literacy rates vary significantly across different <strong>regions</strong> of the world. Some areas, particularly in <strong>Europe</strong> and <strong>East Asia</strong>, demonstrate near equality between young male and female literacy rates. On the other hand, regions like <strong>Africa</strong> and parts of <strong>South Asia</strong> continue to face challenges in balancing literacy rates between genders.
           <br><br>
-          This scatter plot offers a glimpse into the global picture of youth literacy, highlighting key areas where progress has been made and where more work is needed to ensure <strong>gender equality</strong> in education. The size of each point represents the population, emphasizing how literacy rates can differ in countries of varying sizes.
+          This scatter plot offers a glimpse into the global picture of youth literacy, highlighting key areas where progress has been made and where more work is needed to ensure <strong>gender equality</strong> in education.
         </p>
       </div>
 
@@ -95,6 +105,15 @@
       <div class="scatter-plot-container">
         <div id="scatter-plot" class="chart-container"></div>
       </div>
+    </div>
+
+    <!-- Stacked Bar Chart Section -->
+    <div class="stacked-bar-section">
+      <h2>Children Out of School (Primary)</h2>
+      <p>
+        The number of children out of school reflects broader social issues like poverty and inequality, which result in missed opportunities for growth and education. This chart shows how these trends have developed over time for both <strong>male</strong> and <strong>female</strong> students in selected countries.
+      </p>
+      <div id="stacked-bar-chart" class="chart-container"></div>
     </div>
 
     <!-- Radar Chart Section -->
@@ -113,24 +132,20 @@
   </footer>
 
   <script type="text/javascript">
-    // Embed the map with country selection
     vegaEmbed('#symbol_map', "js/cloroplethMap.json").then(function(result) {
-      // Listen for country selection on the map
       result.view.addSignalListener('countrySelection', function(name, value) {
         if (value) {
-          console.log("Selected Country: ", value);  // For debugging
-          updateRadarChart(value);  // Update radar chart with selected country
+          console.log("Selected Country: ", value);  
         }
       });
     }).catch(console.error);
 
-    // Function to update the radar chart based on selected country
     function updateRadarChart(selectedCountry) {
-      vegaEmbed('#radar-chart', 'js/chart3.json', {
+      vegaEmbed('#radar-chart', 'js/stackedBarChart.json', {
         config: {
           signals: [
             {
-              name: 'selected_country',  // This signal name must match the one in the radar chart spec (chart3.json)
+              name: 'selected_country',  
               value: selectedCountry
             }
           ]
@@ -157,8 +172,8 @@
     vegaEmbed('#scatter-plot', "js/scatterPlot.json").then(function(result) {
     }).catch(console.error);
 
-    // Embed the scatter plot (#scatter-plot)
-    vegaEmbed('#chart3', "js/chart3.json").then(function(result) {
+    // Embed stacked bar chart
+    vegaEmbed('#stacked-bar-chart', "js/stackedBarChart.json").then(function(result) {
     }).catch(console.error);
 
   </script>

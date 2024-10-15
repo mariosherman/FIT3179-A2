@@ -3,7 +3,7 @@
   "hconcat": [
     {
       "title": "Mean Government Expenditure on Education Over Time",
-      "width": 650,
+      "width": 450,
       "height": 350,
       "data": {
         "url": "data/expenditure-on-education.csv",
@@ -70,7 +70,7 @@
             "format": {"type": "csv"}
           },
           "height": 150,
-          "width": 300,
+          "width": 200,
           "transform": [
             {
               "fold": [
@@ -150,7 +150,7 @@
             "url": "data/expenditure-on-education.csv",
             "format": {"type": "csv"}
           },
-          "width": 300,
+          "width": 200,
           "height": 150,
           "transform": [
             {
