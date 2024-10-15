@@ -1,19 +1,59 @@
 import pandas as pd
 
-# Load the CSV data into a DataFrame
-df = pd.read_csv('FIT3179-A2\data\literacy-rate-of-young-men-and-women.csv')
+# Load the original CSV content from the user's data
+file_path = 'FIT3179-A2\data\global-education.csv'
+df = pd.read_csv(file_path)
 
-# Drop rows where either Youth Male or Female Literacy Rate is null
-df_filtered = df.dropna(subset=['Youth Male Literacy Rate', 'Youth Female Literacy Rate'])
+# Create separate rows for male and female data
+males = df.copy()
+females = df.copy()
 
-# Sort by Entity (country) and Year in descending order
-df_filtered = df_filtered.sort_values(by=['Entity', 'Year'], ascending=[True, False])
+# Modify male rows
+males['Gender'] = 'Male'
+males = males.rename(columns={
+    "OOSR_Pre0Primary_Age_Male": "OOSR_Pre0Primary_Age",
+    "OOSR_Primary_Age_Male": "OOSR_Primary_Age",
+    "OOSR_Lower_Secondary_Age_Male": "OOSR_Lower_Secondary_Age",
+    "OOSR_Upper_Secondary_Age_Male": "OOSR_Upper_Secondary_Age",
+    "Completion_Rate_Primary_Male": "Completion_Rate_Primary",
+    "Completion_Rate_Lower_Secondary_Male": "Completion_Rate_Lower_Secondary",
+    "Completion_Rate_Upper_Secondary_Male": "Completion_Rate_Upper_Secondary",
+    "Youth_15_24_Literacy_Rate_Male": "Youth_15_24_Literacy_Rate"
+})
 
-# Keep only the last year of data for each country
-df_last_year = df_filtered.drop_duplicates(subset=['Entity'], keep='first')
+# Modify female rows
+females['Gender'] = 'Female'
+females = females.rename(columns={
+    "OOSR_Pre0Primary_Age_Female": "OOSR_Pre0Primary_Age",
+    "OOSR_Primary_Age_Female": "OOSR_Primary_Age",
+    "OOSR_Lower_Secondary_Age_Female": "OOSR_Lower_Secondary_Age",
+    "OOSR_Upper_Secondary_Age_Female": "OOSR_Upper_Secondary_Age",
+    "Completion_Rate_Primary_Female": "Completion_Rate_Primary",
+    "Completion_Rate_Lower_Secondary_Female": "Completion_Rate_Lower_Secondary",
+    "Completion_Rate_Upper_Secondary_Female": "Completion_Rate_Upper_Secondary",
+    "Youth_15_24_Literacy_Rate_Female": "Youth_15_24_Literacy_Rate"
+})
 
-# Display the filtered data
-print(df_last_year)
+# Remove old columns from both datasets
+columns_to_remove = [
+    "OOSR_Pre0Primary_Age_Female", "OOSR_Primary_Age_Female", "OOSR_Lower_Secondary_Age_Female", 
+    "OOSR_Upper_Secondary_Age_Female", "Completion_Rate_Primary_Female", 
+    "Completion_Rate_Lower_Secondary_Female", "Completion_Rate_Upper_Secondary_Female", 
+    "Youth_15_24_Literacy_Rate_Female", "OOSR_Pre0Primary_Age_Male", 
+    "OOSR_Primary_Age_Male", "OOSR_Lower_Secondary_Age_Male", "OOSR_Upper_Secondary_Age_Male", 
+    "Completion_Rate_Primary_Male", "Completion_Rate_Lower_Secondary_Male", 
+    "Completion_Rate_Upper_Secondary_Male", "Youth_15_24_Literacy_Rate_Male"
+]
 
-# Save the filtered data to a new CSV file if needed
-df_last_year.to_csv('filtered_literacy_data.csv', index=False)
+males = males.drop(columns=columns_to_remove)
+females = females.drop(columns=columns_to_remove)
+
+# Concatenate the two datasets
+final_df = pd.concat([males, females], ignore_index=True)
+
+# Save the modified CSV
+output_file_path = 'data/modified_countries_and_areas.csv'
+final_df.to_csv(output_file_path, index=False)
+
+# Display the dataframe to the user
+import ace_tools as tools; tools.display_dataframe_to_user(name="Modified Education Dataset", dataframe=final_df)

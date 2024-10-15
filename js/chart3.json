@@ -1,33 +1,80 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Diverging Stacked Bar Chart with small multiples for gender comparisons.",
+    "description": "Out-of-School Rates and Completion Rates for Males and Females by Country",
     "data": {
-      "url": "data/global-education.csv",
-      "format": {"type": "csv"}
+      "url": "data/global-education.csv"
     },
     "transform": [
-      {"fold": ["Completion_Rate_Primary_Male", "Completion_Rate_Primary_Female", 
-                "Completion_Rate_Lower_Secondary_Male", "Completion_Rate_Lower_Secondary_Female"],
-       "as": ["key", "value"]},
-      {"calculate": "indexof(datum.key, 'Male') > -1 ? 'Male' : 'Female'", "as": "gender"},
-      {"calculate": "replace(datum.key, /_(Male|Female)/, '')", "as": "education_level"}
-    ],
-    "facet": {"field": "Countries and areas", "columns": 4},  
-    "spec": {
-      "mark": "bar",
-      "encoding": {
-        "x": {
-          "field": "education_level", "type": "nominal", "title": "Education Level",
-          "axis": {"labelAngle": 0}
-        },
-        "y": {
-          "field": "value", "type": "quantitative", "title": "Completion Rate (%)",
-          "stack": "zero"
-        },
-        "color": {
-          "field": "gender", "type": "nominal", "scale": {"range": ["#675193", "#ca8861"]},
-          "legend": {"title": "Gender"}
+      {
+        "filter": {
+          "param": "countryFilter",
+          "field": "Countries and areas",
+          "equal": "Afghanistan"
         }
+      }
+    ],
+    "params": [
+      {
+        "name": "countryFilter",
+        "value": "Afghanistan",
+        "bind": {
+          "input": "select",
+          "options": ["Afghanistan", "Albania"],
+          "labels": ["Afghanistan", "Albania"],
+          "name": "Select Country: "
+        }
+      }
+    ],
+    "layer": [
+      {
+        "mark": {"type": "rule", "strokeWidth": 2},
+        "encoding": {
+          "x": {"field": "Type", "type": "nominal"},
+          "y": {"field": "Rate", "type": "quantitative"},
+          "color": {"field": "Gender"},
+          "tooltip": [
+            {"field": "Countries and areas", "title": "Country"},
+            {"field": "Type", "title": "Education Level"},
+            {"field": "Gender", "title": "Gender"},
+            {"field": "Rate", "title": "Rate (%)"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "circle", "size": 100},
+        "encoding": {
+          "x": {"field": "Type", "type": "nominal"},
+          "y": {"field": "Rate", "type": "quantitative"},
+          "color": {"field": "Gender"},
+          "tooltip": [
+            {"field": "Countries and areas", "title": "Country"},
+            {"field": "Type", "title": "Education Level"},
+            {"field": "Gender", "title": "Gender"},
+            {"field": "Rate", "title": "Rate (%)"}
+          ]
+        }
+      }
+    ],
+    "transform": [
+      {
+        "calculate": "'OOSR_PrePrimary'",
+        "as": "Type"
+      },
+      {
+        "calculate": "datum.OOSR_PrePrimary_Age_Male",
+        "as": "Rate",
+        "field": "Male"
+      },
+      {
+        "calculate": "datum.OOSR_PrePrimary_Age_Female",
+        "as": "Rate",
+        "field": "Female"
+      }
+        ],
+    "config": {
+      "axis": {
+        "labelFontSize": 12,
+        "titleFontSize": 14
       }
     }
   }
