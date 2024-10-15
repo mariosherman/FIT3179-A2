@@ -1,0 +1,215 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.json",
+    "description": "Radar chart showing education indicators for a selected country.",
+    "width": 400,
+    "height": 400,
+    "padding": 60,  
+    "autosize": {"type": "none", "contains": "padding"},
+    "signals": [
+      {"name": "radius", "update": "width / 2"},
+      {
+        "name": "selected_country",
+        "value": "Afghanistan",  
+        "bind": {
+          "input": "select",
+          "options": [
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla",
+            "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+            "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados", 
+            "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", 
+            "Bosnia and Herzegovina", "Botswana", "Brazil", "British Virgin Islands", 
+            "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cape Verde", 
+            "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", 
+            "Chile", "China", "Colombia", "Comoros", "Republic of the Congo", 
+            "Cook Islands", "Costa Rica", "Ivory Coast", "Croatia", "Cuba", 
+            "Cyprus", "Czech Republic", "North Korea", "Democratic Republic of the Congo", 
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", 
+            "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", 
+            "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", 
+            "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", 
+            "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", 
+            "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Republic of Ireland", 
+            "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", 
+            "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", 
+            "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", 
+            "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", 
+            "Marshall Islands", "Mauritania", "Mauritius", "Mexico", 
+            "Federated States of Micronesia", "Monaco", "Mongolia", "Montenegro", 
+            "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", 
+            "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", 
+            "Niue", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", 
+            "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", 
+            "Portugal", "Qatar", "South Korea", "Moldova", "Romania", "Russia", 
+            "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", 
+            "Samoa", "San Marino", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", 
+            "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", 
+            "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", 
+            "Suriname", "Sweden", "Switzerland", "Syria", "Tajikistan", "Thailand", 
+            "East Timor", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", 
+            "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", 
+            "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", 
+            "Tanzania", "United States", "Uruguay", "Uzbekistan", "Vanuatu", 
+            "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+          ],
+          "name": "Selected Country"
+        }
+      }
+    ],
+    "data": [
+      {
+        "name": "table",
+        "url": "data/global-education.csv",
+        "format": {"type": "csv"},
+        "transform": [
+          {
+            "type": "filter",
+            "expr": "datum['Countries and areas'] === selected_country"
+          },
+          {
+            "type": "fold",
+            "fields": [
+              "Completion_Rate_Primary_Male",
+              "Completion_Rate_Primary_Female",
+              "Completion_Rate_Lower_Secondary_Male",
+              "Completion_Rate_Lower_Secondary_Female",
+              "Completion_Rate_Upper_Secondary_Male",
+              "Completion_Rate_Upper_Secondary_Female"
+            ],
+            "as": ["key", "value"]
+          }
+        ]
+      },
+      {
+        "name": "keys",
+        "source": "table",
+        "transform": [
+          {
+            "type": "aggregate",
+            "groupby": ["key"]
+          }
+        ]
+      }
+    ],
+    "scales": [
+      {
+        "name": "angular",
+        "type": "point",
+        "range": {"signal": "[-PI, PI]"},
+        "padding": 0.5,
+        "domain": {"data": "table", "field": "key"}
+      },
+      {
+        "name": "radial",
+        "type": "linear",
+        "range": {"signal": "[0, radius]"},
+        "zero": true,
+        "nice": false,
+        "domain": {"data": "table", "field": "value"},
+        "domainMin": 0
+      },
+      {
+        "name": "color",
+        "type": "ordinal",
+        "domain": {"data": "table", "field": "key"},
+        "range": {"scheme": "category10"}
+      }
+    ],
+    "encode": {
+      "enter": {
+        "x": {"signal": "radius"},
+        "y": {"signal": "radius"}
+      }
+    },
+    "marks": [
+      {
+        "type": "group",
+        "name": "categories",
+        "zindex": 1,
+        "marks": [
+          {
+            "type": "line",
+            "name": "category-line",
+            "from": {"data": "table"},
+            "encode": {
+              "enter": {
+                "interpolate": {"value": "linear-closed"},
+                "x": {"signal": "scale('radial', datum.value) * cos(scale('angular', datum.key))"},
+                "y": {"signal": "scale('radial', datum.value) * sin(scale('angular', datum.key))"},
+                "stroke": {"scale": "color", "field": "key"},
+                "strokeWidth": {"value": 1},
+                "fill": {"scale": "color", "field": "key"},
+                "fillOpacity": {"value": 0.3}
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "rule",
+        "name": "radial-grid",
+        "from": {"data": "keys"},
+        "zindex": 0,
+        "encode": {
+          "enter": {
+            "x": {"value": 0},
+            "y": {"value": 0},
+            "x2": {"signal": "radius * cos(scale('angular', datum.key))"},
+            "y2": {"signal": "radius * sin(scale('angular', datum.key))"},
+            "stroke": {"value": "lightgray"},
+            "strokeWidth": {"value": 1}
+          }
+        }
+      },
+      {
+        "type": "text",
+        "name": "key-label",
+        "from": {"data": "keys"},
+        "zindex": 1,
+        "encode": {
+          "enter": {
+            "x": {"signal": "(radius + 20) * cos(scale('angular', datum.key))"}, 
+            "y": {"signal": "(radius + 20) * sin(scale('angular', datum.key))"}, 
+            "text": {"field": "key"},
+            "align": [
+              {
+                "test": "abs(scale('angular', datum.key)) > PI / 2",
+                "value": "right"
+              },
+              {
+                "value": "left"
+              }
+            ],
+            "baseline": [
+              {
+                "test": "scale('angular', datum.key) > 0", "value": "top"
+              },
+              {
+                "test": "scale('angular', datum.key) == 0", "value": "middle"
+              },
+              {
+                "value": "bottom"
+              }
+            ],
+            "fill": {"value": "black"},
+            "fontWeight": {"value": "bold"},
+            "fontSize": {"value": 12}  
+          }
+        }
+      },
+      {
+        "type": "line",
+        "name": "outer-line",
+        "from": {"data": "radial-grid"},
+        "encode": {
+          "enter": {
+            "interpolate": {"value": "linear-closed"},
+            "x": {"field": "x2"},
+            "y": {"field": "y2"},
+            "stroke": {"value": "lightgray"},
+            "strokeWidth": {"value": 1}
+          }
+        }
+      }
+    ]
+  }
+    
