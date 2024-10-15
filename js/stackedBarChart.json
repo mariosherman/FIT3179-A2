@@ -6,7 +6,7 @@
     "format": {"type": "csv"}
   },
   "width": 600,
-  "height": 400,
+  "height": 300,
   "title": {
     "text": "Children out of school (Primary)",
     "subtitleFontSize": 14
@@ -79,7 +79,6 @@
       "type": "quantitative",
       "title": "Children out of school",
       "axis": {
-        "format": ",",  
         "title": "Children out of school"
       }
     },

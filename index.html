@@ -54,7 +54,7 @@
   <!-- Dashboard Header -->
   <header>
     <h1>Education Around the World</h1>
-    <p>Explore Global Education Trends</p>
+    <p>Explore Global Education and Literacy Trends</p>
   </header>
 
   <!-- Dashboard Div -->
@@ -73,9 +73,9 @@
 
     <!-- Section for Government Expenditure Text -->
     <div class="expenditure-text" style="padding-right: 20px; margin-top: 40px;">
-      <h2>Government Expenditure on Education</h2>
+      <h2>Government Expenditure on Education and Its Impact on Literacy</h2>
       <p>
-        Government expenditure on education is a critical indicator of a nation's commitment to fostering a well-educated and skilled population. Education spending influences the quality of schools, availability of resources, and access to education, especially in underserved regions. By analyzing the <strong>mean government expenditure</strong> across countries over time, we can observe global trends and shifts in priorities, especially in the years following significant global events or policy changes.
+        Government expenditure on education is a critical indicator of a nation's commitment to fostering a well-educated and literate population. Education spending influences not only the quality of schools and resources but also directly impacts literacy rates, particularly in underserved regions. By analyzing the <strong>mean government expenditure</strong> across countries over time, we can observe global trends and shifts in priorities, especially in the years following significant global events or policy changes. Higher spending typically correlates with improved literacy outcomes.
       </p>
     </div>
 
@@ -93,11 +93,11 @@
     <div class="scatter-plot-section">
       <!-- Scatter Plot Text -->
       <div class="scatter-plot-text">
-        <h2>Does Gender Matter?</h2>
+        <h2>Does Gender Matter for Literacy?</h2>
         <p>
           Youth literacy rates vary significantly across different <strong>regions</strong> of the world. Some areas, particularly in <strong>Europe</strong> and <strong>East Asia</strong>, demonstrate near equality between young male and female literacy rates. On the other hand, regions like <strong>Africa</strong> and parts of <strong>South Asia</strong> continue to face challenges in balancing literacy rates between genders.
-          <br><br>
-          This scatter plot offers a glimpse into the global picture of youth literacy, highlighting key areas where progress has been made and where more work is needed to ensure <strong>gender equality</strong> in education.
+
+          This scatter plot offers a glimpse into the global picture of youth literacy, highlighting key areas where progress has been made and where more work is needed to ensure <strong>gender equality</strong> in education and literacy.
         </p>
       </div>
 
@@ -111,14 +111,13 @@
     <div class="stacked-bar-section">
       <h2>Children Out of School (Primary)</h2>
       <p>
-        The number of children out of school reflects broader social issues like poverty and inequality, which result in missed opportunities for growth and education. This chart shows how these trends have developed over time for both <strong>male</strong> and <strong>female</strong> students in selected countries.
+        The number of children out of school reflects broader social issues like poverty and inequality, which result in missed opportunities for growth, education, and the development of literacy skills. This chart shows how these trends have developed over time for both <strong>male</strong> and <strong>female</strong> students in selected countries, impacting overall literacy rates in these regions.
       </p>
       <div id="stacked-bar-chart" class="chart-container"></div>
     </div>
 
     <!-- Radar Chart Section -->
     <div class="radar-chart-section">
-      <h2>Country-Specific Education Insights</h2>
       <div id="radar-chart" class="chart-container"></div>
     </div>
 
@@ -126,7 +125,11 @@
 
   <!-- Footer Section -->
   <footer style="margin-top: 50px; padding: 20px; background-color: #f0f0f0; text-align: center;">
-    <p><strong>Data Sources:</strong> <a href="https://data.worldbank.org/topic/education" target="_blank">World Bank Education Data</a> and <a href="https://ourworldindata.org/literacy" target="_blank">Our World in Data Literacy</a></p>
+    <p><strong>Data Sources:</strong> 
+      <a href="https://data.worldbank.org/topic/education" target="_blank">World Bank Education Data</a>, 
+      <a href="https://ourworldindata.org/literacy" target="_blank">Our World in Data Literacy</a>, and 
+      <a href="https://www.kaggle.com/datasets/nelgiriyewithana/world-educational-data" target="_blank">Kaggle World Educational Data</a>
+    </p>
     <p><strong>Author:</strong> Mario Sherman Tjokrosaputra</p>
     <p><small>&copy; 2024 Education Data Dashboard</small></p>
   </footer>
@@ -170,10 +173,6 @@
 
     // Embed the scatter plot (#scatter-plot)
     vegaEmbed('#scatter-plot', "js/scatterPlot.json").then(function(result) {
-    }).catch(console.error);
-
-    // Embed stacked bar chart
-    vegaEmbed('#stacked-bar-chart', "js/stackedBarChart.json").then(function(result) {
     }).catch(console.error);
 
   </script>
