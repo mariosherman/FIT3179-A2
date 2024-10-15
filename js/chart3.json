@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Children out of school by gender over time",
+  "description": "Children out of school by gender over time for a selected country",
   "data": {
     "url": "data/combined_out_of_school.csv",
     "format": {"type": "csv"}
@@ -8,10 +8,66 @@
   "width": 600,
   "height": 400,
   "title": {
-    "text": "Children out of school",
-    "subtitle": "The number of children out of school reflects issues like poverty and inequality, leading to missed opportunities for growth and deepening social disparities.",
+    "text": "Children out of school (Primary)",
     "subtitleFontSize": 14
   },
+  "params": [
+    {
+      "name": "selectedCountry",
+      "value": "Malaysia",
+      "bind": {
+        "input": "select",
+        "options": [
+          "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla",
+          "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+          "Azerbaijan", "The Bahamas", "Bahrain", "Bangladesh", "Barbados",
+          "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia",
+          "Bosnia and Herzegovina", "Botswana", "Brazil", "British Virgin Islands",
+          "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cape Verde",
+          "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad",
+          "Chile", "China", "Colombia", "Comoros", "Republic of the Congo",
+          "Cook Islands", "Costa Rica", "Ivory Coast", "Croatia", "Cuba",
+          "Cyprus", "Czech Republic", "North Korea", "Democratic Republic of the Congo",
+          "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador",
+          "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia",
+          "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon",
+          "The Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada",
+          "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras",
+          "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Republic of Ireland",
+          "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
+          "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
+          "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+          "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+          "Marshall Islands", "Mauritania", "Mauritius", "Mexico",
+          "Federated States of Micronesia", "Monaco", "Mongolia", "Montenegro",
+          "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru",
+          "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria",
+          "Niue", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau",
+          "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland",
+          "Portugal", "Qatar", "South Korea", "Moldova", "Romania", "Russia",
+          "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
+          "Samoa", "San Marino", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
+          "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
+          "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan",
+          "Suriname", "Sweden", "Switzerland", "Syria", "Tajikistan", "Thailand",
+          "East Timor", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago",
+          "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands",
+          "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+          "Tanzania", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
+          "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+        ],
+        "name": "Select Country: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum['Country Name'] == selectedCountry"
+    },
+    {
+      "filter": "datum.Year >= 2000"
+    }
+  ],
   "encoding": {
     "x": {
       "field": "Year",
@@ -21,19 +77,33 @@
     "y": {
       "field": "Value",
       "type": "quantitative",
-      "title": "Children out of school"
+      "title": "Children out of school",
+      "axis": {
+        "format": ",",  
+        "title": "Children out of school"
+      }
     },
     "color": {
       "field": "Gender",
       "type": "nominal",
       "scale": {
-        "range": ["#F94144", "#F3722C"]
+        "range": ["#F94144", "#0096FF"]
       },
       "legend": {
         "title": "Gender",
         "orient": "top-right"
       }
-    }
+    },
+    "tooltip": [
+      {"field": "Year", "type": "ordinal", "title": "Year"},
+      {
+        "field": "Value",
+        "type": "quantitative",
+        "title": "Children out of school",
+        "format": ","  
+      },
+      {"field": "Gender", "type": "nominal", "title": "Gender"}
+    ]
   },
   "mark": {
     "type": "bar",
