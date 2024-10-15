@@ -1,59 +1,25 @@
 import pandas as pd
 
-# Load the original CSV content from the user's data
-file_path = 'FIT3179-A2\data\global-education.csv'
-df = pd.read_csv(file_path)
+# Load male and female datasets
+male_df = pd.read_csv('FIT3179-A2/data/male-out-of-school.csv')
+female_df = pd.read_csv('FIT3179-A2/data/female-out-of-school.csv')
 
-# Create separate rows for male and female data
-males = df.copy()
-females = df.copy()
+# Melt the dataframes to long format to have years in one column
+male_long = male_df.melt(id_vars=["Country Name", "Country Code", "Indicator Name", "Indicator Code"], 
+                         var_name="Year", value_name="Male")
+female_long = female_df.melt(id_vars=["Country Name", "Country Code", "Indicator Name", "Indicator Code"], 
+                             var_name="Year", value_name="Female")
 
-# Modify male rows
-males['Gender'] = 'Male'
-males = males.rename(columns={
-    "OOSR_Pre0Primary_Age_Male": "OOSR_Pre0Primary_Age",
-    "OOSR_Primary_Age_Male": "OOSR_Primary_Age",
-    "OOSR_Lower_Secondary_Age_Male": "OOSR_Lower_Secondary_Age",
-    "OOSR_Upper_Secondary_Age_Male": "OOSR_Upper_Secondary_Age",
-    "Completion_Rate_Primary_Male": "Completion_Rate_Primary",
-    "Completion_Rate_Lower_Secondary_Male": "Completion_Rate_Lower_Secondary",
-    "Completion_Rate_Upper_Secondary_Male": "Completion_Rate_Upper_Secondary",
-    "Youth_15_24_Literacy_Rate_Male": "Youth_15_24_Literacy_Rate"
-})
+# Merge the two datasets on Country Name, Country Code, and Year
+combined_df = pd.merge(male_long, female_long, 
+                       on=["Country Name", "Country Code", "Year"], 
+                       how='outer')
 
-# Modify female rows
-females['Gender'] = 'Female'
-females = females.rename(columns={
-    "OOSR_Pre0Primary_Age_Female": "OOSR_Pre0Primary_Age",
-    "OOSR_Primary_Age_Female": "OOSR_Primary_Age",
-    "OOSR_Lower_Secondary_Age_Female": "OOSR_Lower_Secondary_Age",
-    "OOSR_Upper_Secondary_Age_Female": "OOSR_Upper_Secondary_Age",
-    "Completion_Rate_Primary_Female": "Completion_Rate_Primary",
-    "Completion_Rate_Lower_Secondary_Female": "Completion_Rate_Lower_Secondary",
-    "Completion_Rate_Upper_Secondary_Female": "Completion_Rate_Upper_Secondary",
-    "Youth_15_24_Literacy_Rate_Female": "Youth_15_24_Literacy_Rate"
-})
+# Reshape data to have 'Gender' and 'Value' columns
+combined_long = pd.melt(combined_df, 
+                        id_vars=["Country Name", "Country Code", "Year"], 
+                        value_vars=["Male", "Female"], 
+                        var_name="Gender", value_name="Value")
 
-# Remove old columns from both datasets
-columns_to_remove = [
-    "OOSR_Pre0Primary_Age_Female", "OOSR_Primary_Age_Female", "OOSR_Lower_Secondary_Age_Female", 
-    "OOSR_Upper_Secondary_Age_Female", "Completion_Rate_Primary_Female", 
-    "Completion_Rate_Lower_Secondary_Female", "Completion_Rate_Upper_Secondary_Female", 
-    "Youth_15_24_Literacy_Rate_Female", "OOSR_Pre0Primary_Age_Male", 
-    "OOSR_Primary_Age_Male", "OOSR_Lower_Secondary_Age_Male", "OOSR_Upper_Secondary_Age_Male", 
-    "Completion_Rate_Primary_Male", "Completion_Rate_Lower_Secondary_Male", 
-    "Completion_Rate_Upper_Secondary_Male", "Youth_15_24_Literacy_Rate_Male"
-]
-
-males = males.drop(columns=columns_to_remove)
-females = females.drop(columns=columns_to_remove)
-
-# Concatenate the two datasets
-final_df = pd.concat([males, females], ignore_index=True)
-
-# Save the modified CSV
-output_file_path = 'data/modified_countries_and_areas.csv'
-final_df.to_csv(output_file_path, index=False)
-
-# Display the dataframe to the user
-import ace_tools as tools; tools.display_dataframe_to_user(name="Modified Education Dataset", dataframe=final_df)
+# Save the combined data to a new CSV
+combined_long.to_csv('combined_out_of_school.csv', index=False)

@@ -1,81 +1,42 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Out-of-School Rates and Completion Rates for Males and Females by Country",
-    "data": {
-      "url": "data/global-education.csv"
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Children out of school by gender over time",
+  "data": {
+    "url": "data/combined_out_of_school.csv",
+    "format": {"type": "csv"}
+  },
+  "width": 600,
+  "height": 400,
+  "title": {
+    "text": "Children out of school",
+    "subtitle": "The number of children out of school reflects issues like poverty and inequality, leading to missed opportunities for growth and deepening social disparities.",
+    "subtitleFontSize": 14
+  },
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal",
+      "title": "Year"
     },
-    "transform": [
-      {
-        "filter": {
-          "param": "countryFilter",
-          "field": "Countries and areas",
-          "equal": "Afghanistan"
-        }
-      }
-    ],
-    "params": [
-      {
-        "name": "countryFilter",
-        "value": "Afghanistan",
-        "bind": {
-          "input": "select",
-          "options": ["Afghanistan", "Albania"],
-          "labels": ["Afghanistan", "Albania"],
-          "name": "Select Country: "
-        }
-      }
-    ],
-    "layer": [
-      {
-        "mark": {"type": "rule", "strokeWidth": 2},
-        "encoding": {
-          "x": {"field": "Type", "type": "nominal"},
-          "y": {"field": "Rate", "type": "quantitative"},
-          "color": {"field": "Gender"},
-          "tooltip": [
-            {"field": "Countries and areas", "title": "Country"},
-            {"field": "Type", "title": "Education Level"},
-            {"field": "Gender", "title": "Gender"},
-            {"field": "Rate", "title": "Rate (%)"}
-          ]
-        }
+    "y": {
+      "field": "Value",
+      "type": "quantitative",
+      "title": "Children out of school"
+    },
+    "color": {
+      "field": "Gender",
+      "type": "nominal",
+      "scale": {
+        "range": ["#F94144", "#F3722C"]
       },
-      {
-        "mark": {"type": "circle", "size": 100},
-        "encoding": {
-          "x": {"field": "Type", "type": "nominal"},
-          "y": {"field": "Rate", "type": "quantitative"},
-          "color": {"field": "Gender"},
-          "tooltip": [
-            {"field": "Countries and areas", "title": "Country"},
-            {"field": "Type", "title": "Education Level"},
-            {"field": "Gender", "title": "Gender"},
-            {"field": "Rate", "title": "Rate (%)"}
-          ]
-        }
-      }
-    ],
-    "transform": [
-      {
-        "calculate": "'OOSR_PrePrimary'",
-        "as": "Type"
-      },
-      {
-        "calculate": "datum.OOSR_PrePrimary_Age_Male",
-        "as": "Rate",
-        "field": "Male"
-      },
-      {
-        "calculate": "datum.OOSR_PrePrimary_Age_Female",
-        "as": "Rate",
-        "field": "Female"
-      }
-        ],
-    "config": {
-      "axis": {
-        "labelFontSize": 12,
-        "titleFontSize": 14
+      "legend": {
+        "title": "Gender",
+        "orient": "top-right"
       }
     }
+  },
+  "mark": {
+    "type": "bar",
+    "tooltip": true
   }
-  
+}
